@@ -4,7 +4,7 @@
 ![Vite 8](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-A small three.js scene with a glowing portal and fireflies, built to test
+A `three.js` scene with a glowing portal and fireflies, built to test
 texture baking and keeping a scene fast on a range of devices. Live at
 [polite-tanuki-e48e8b.netlify.app](https://polite-tanuki-e48e8b.netlify.app/).
 
