@@ -1,5 +1,5 @@
 uniform float uTime;
-uniform float uPixelRation;
+uniform float uPixelRatio;
 uniform float uSize;
 
 attribute float aScale;
@@ -10,9 +10,9 @@ void main()
     modelPosition.y += sin(uTime + modelPosition.x * 100.0) * aScale * 0.1;
 
     vec4 viewPosition = viewMatrix * modelPosition;
-    vec4 projectionPosition = projectionMatrix * viewPosition;
+    gl_Position = projectionMatrix * viewPosition;
 
-    gl_Position = projectionPosition;
-    gl_PointSize = uSize * aScale * uPixelRation;
-    gl_PointSize *= (1.9 / -viewPosition.z);
+    gl_PointSize = uSize * aScale * uPixelRatio;
+    // Size attenuation: smaller with distance from the camera
+    gl_PointSize *= 1.9 / -viewPosition.z;
 }
