@@ -3,15 +3,13 @@ import * as dat from 'lil-gui'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 
-import fireFliesVertexShader from './shaders/fireflies/vertex.glsl'
-import fireFliesFragmentShader from './shaders/fireflies/fragment.glsl'
-import portalVertexShader from './shaders/portal/vertex.glsl'
-import portalFragmentShader from './shaders/portal/fragment.glsl'
+import fireFliesVertexShader from './shaders/fireflies/vertex.glsl?raw'
+import fireFliesFragmentShader from './shaders/fireflies/fragment.glsl?raw'
+import portalVertexShader from './shaders/portal/vertex.glsl?raw'
+import portalFragmentShader from './shaders/portal/fragment.glsl?raw'
 
 // /**
 //  * Spector JS
@@ -41,20 +39,15 @@ scene.fog = new THREE.FogExp2(sceneProperties.fogColor, sceneProperties.fogDensi
 // Texture loader
 const textureLoader = new THREE.TextureLoader()
 
-// Draco loader
-const dracoLoader = new DRACOLoader()
-dracoLoader.setDecoderPath('draco/')
-
 // GLTF loader
 const gltfLoader = new GLTFLoader()
-gltfLoader.setDRACOLoader(dracoLoader)
 
 /**
  * Textures
  */
 const bakedTexture = textureLoader.load('baked.jpg')
 bakedTexture.flipY = false
-bakedTexture.encoding = THREE.sRGBEncoding
+bakedTexture.colorSpace = THREE.SRGBColorSpace
 
 /**
  * Materials
@@ -80,8 +73,8 @@ const portalEmissionProperties = {
 const portalEmissionMaterial = new THREE.ShaderMaterial({
     uniforms: {
         uTime: { value: 0 },
-        uColorStart: { value: new THREE.Color(portalEmissionProperties.colorStart) },
-        uColorEnd: { value: new THREE.Color(portalEmissionProperties.colorEnd) }
+        uColorStart: { value: new THREE.Color().setStyle(portalEmissionProperties.colorStart, THREE.LinearSRGBColorSpace) },
+        uColorEnd: { value: new THREE.Color().setStyle(portalEmissionProperties.colorEnd, THREE.LinearSRGBColorSpace) }
     },
     vertexShader: portalVertexShader,
     fragmentShader: portalFragmentShader,
@@ -205,7 +198,6 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-renderer.outputEncoding = THREE.sRGBEncoding
 renderer.setClearColor(rendererProperties.clearColor)
 
 /**
@@ -299,13 +291,13 @@ poleLightEmissionFolder.addColor(poleLightEmissionProperties, 'color')
 // Portal properties
 portalEmissionFolder.addColor(portalEmissionProperties, 'colorStart')
     .onChange((color) => {
-        portalEmissionMaterial.uniforms.uColorStart.value.set(color)
+        portalEmissionMaterial.uniforms.uColorStart.value.setStyle(color, THREE.LinearSRGBColorSpace)
     })
     .name('Color Start')
 
 portalEmissionFolder.addColor(portalEmissionProperties, 'colorEnd')
     .onChange((color) => {
-        portalEmissionMaterial.uniforms.uColorEnd.value.set(color)
+        portalEmissionMaterial.uniforms.uColorEnd.value.setStyle(color, THREE.LinearSRGBColorSpace)
     })
     .name('Color End')
 
