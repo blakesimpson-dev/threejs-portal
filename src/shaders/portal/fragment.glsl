@@ -4,6 +4,8 @@ uniform vec3 uColorEnd;
 
 varying vec2 vUv;
 
+// Classic Perlin 3D noise by Stefan Gustavson (MIT),
+// https://github.com/stegu/webgl-noise
 vec4 permute(vec4 x){ return mod(((x*34.0)+1.0)*x, 289.0); }
 vec4 taylorInvSqrt(vec4 r){ return 1.79284291400159 - 0.85373472095314 * r; }
 vec3 fade(vec3 t) { return t*t*t*(t*(t*6.0-15.0)+10.0); }
@@ -78,28 +80,16 @@ float cnoise(vec3 P)
     return 2.2 * n_xyz;
 }
 
-void main() 
+void main()
 {
-    // Displace the UV
     vec2 displacedUv = vUv + cnoise(vec3(vUv * 5.0, uTime * 0.1));
-
-    // Perlin noise
     float strength = cnoise(vec3(displacedUv * 5.0, uTime * 0.2));
 
-    // Outer glow
     float outerGlow = distance(vUv, vec2(0.5)) * 5.0 - 1.4;
     strength += outerGlow;
-
-
-    // Step
     strength += step(-0.2, strength) * 0.8;
-
-    
-    // // Clamp
     strength = clamp(strength, 0.0, 1.0);
 
-    // Final color
     vec3 color = mix(uColorStart, uColorEnd, strength);
-
     gl_FragColor = vec4(color, 1.0);
 }

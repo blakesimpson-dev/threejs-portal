@@ -1,19 +1,24 @@
-*
-{
-    margin: 0;
-    padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 }
 
 html,
-body
-{
-    overflow: hidden;
+body {
+  overflow: hidden;
+  /* Matches the renderer's clear colour, so nothing flashes before it draws */
+  background-color: #001115;
 }
 
-.webgl
-{
-    position: fixed;
-    top: 0;
-    left: 0;
-    outline: none;
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.webgl.is-loaded {
+  opacity: 1;
 }
