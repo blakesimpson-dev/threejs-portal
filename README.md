@@ -8,6 +8,8 @@ A small three.js scene with a glowing portal and fireflies, built to test
 texture baking and keeping a scene fast on a range of devices. Live at
 [polite-tanuki-e48e8b.netlify.app](https://polite-tanuki-e48e8b.netlify.app/).
 
+![Portal scene](docs/preview.gif)
+
 ## How it works
 
 - **Baked lighting:** modelled and lit in Blender, with all lighting baked into
